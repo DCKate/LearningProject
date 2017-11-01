@@ -159,7 +159,7 @@ size_t opensslevpencry (char* finalstr,char* aes_key,char* aes_iv,char* plan)
     int num = ceil(strlen(plan)/16.0);
     
     char instr[1024]={0};
-    size_t inlen = snprintf((char*)instr,AES_BLOCK_SIZE*num,plan);
+    size_t inlen = snprintf((char*)instr,AES_BLOCK_SIZE*num,"%s",plan);
     /* Initialise the library */
     ERR_load_crypto_strings();
     OpenSSL_add_all_algorithms();
@@ -234,7 +234,7 @@ size_t opensslevpdecry (char* finalout,char* aes_key,char* aes_iv,char* base64st
 //    printf("%s\n", decryptedtext);
 //    hex_print(decryptedtext, decryptedtext_len);
 
-    size_t finallen = snprintf(finalout,(size_t)decryptedtext_len,(char *)decryptedtext);
+    size_t finallen = snprintf(finalout,(size_t)decryptedtext_len,"%s",(char *)decryptedtext);
 //    finalout[finallen]='\0';
     
 //    printf("Plain text[%s] is: %s\n",base64str, finalout);

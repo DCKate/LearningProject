@@ -8,8 +8,14 @@
 
 #include <iostream>
 #include <sys/time.h>
+#include <map>
 #include "ossl_evp.hpp"
 #include "ossl_aes.hpp"
+
+enum run_type {
+    AES,
+    EVP
+};
 
 uint64_t getSystimeUTs ()
 {
@@ -45,20 +51,40 @@ void testaes(){
 //    printf("decryption : %s\n",decrout);
 }
 int main(int argc, const char * argv[]) {
-    uint64_t tevp = 0;
-    uint64_t taes = 0;
-    tevp=getSystimeUTs();
-    for (int ii=0; ii<1000; ii++) {
-        testevp();
+    if(argc<2){
+        std::cout<<"Useg: programe <ho many round:integer> <what api:EVP/AES>"<<std::endl;
+        return 0;
     }
-    uint64_t devp = getSystimeUTs()-tevp;
-    taes=getSystimeUTs();
-    for (int ii=0; ii<1000; ii++) {
-        testaes();
+    std::map<std::string,run_type> emap;
+    emap.insert(std::pair<std::string,run_type>("AES", AES));
+    emap.insert(std::pair<std::string,run_type>("EVP", EVP));
+
+    int count = std::stoi(argv[1],nullptr,10);
+    std::string tyty(argv[2]);
+
+    switch (emap[tyty]){
+        case EVP:{
+            uint64_t tevp=getSystimeUTs();
+            for (int ii=0; ii<count; ii++) {
+                testevp();
+            }
+            uint64_t devp = getSystimeUTs()-tevp;
+            std::cout<<"EVP "<<devp<<std::endl;
+            break;
+        }
+        case AES:{
+            uint64_t taes=getSystimeUTs();
+            for (int ii=0; ii<count; ii++) {
+                testaes();
+            }
+            uint64_t daes = getSystimeUTs()-taes;
+            std::cout<<"AES "<<daes<<std::endl;
+            break;
+        }
+        default:
+            std::cout<<"Oooops~~~"<<std::endl;
+            break;
     }
-    uint64_t daes = getSystimeUTs()-taes;
-    
-    std::cout<<"EVP "<<devp<<std::endl;
-    std::cout<<"AES "<<daes<<std::endl;
+       
     return 0;
 }

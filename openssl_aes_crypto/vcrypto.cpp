@@ -24,7 +24,7 @@ size_t b64_encode (char* dst,const unsigned char *src, size_t len)
     
     // alloc
     enc = (char *) malloc(0);
-    if (NULL == enc) { return NULL; }
+    if (NULL == enc) { return 0; }
     
     // parse until end of source
     while (len--) {
@@ -101,7 +101,7 @@ size_t b64_decode (char* dst, const char *src, size_t len)
     
     // alloc
     dec = (unsigned char *) malloc(0);
-    if (NULL == dec) { return NULL; }
+    if (NULL == dec) { return 0; }
     
     // parse until end of source
     while (len--) {

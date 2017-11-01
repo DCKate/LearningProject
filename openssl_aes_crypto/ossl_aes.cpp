@@ -33,7 +33,7 @@ int ttt()
 //    *ivec3 = (unsigned long) 0xfd0;
     
     AES_KEY aesKey;
-    char* myKey = "Pampers baby-dry";
+    char* myKey = (char*)"Pampers baby-dry";
     int res;
     
     if ((res = AES_set_encrypt_key((unsigned char*) myKey, BLOCK_SIZE, &aesKey)) < 0)
@@ -80,7 +80,7 @@ size_t aes_encrypt(char* plan, char* aes_key,char* aes_iv, char* enout)
 {
     AES_KEY aes;
     unsigned char ivec[AES_BLOCK_SIZE+1]={0};
-    snprintf((char*)ivec,AES_BLOCK_SIZE+1,aes_iv);
+    snprintf((char*)ivec,AES_BLOCK_SIZE+1,"%s",aes_iv);
 //    for (int j = 0; j < AES_BLOCK_SIZE; j++)
 //        printf("%.02hhx ", ivec[j]);
     if(AES_set_encrypt_key((unsigned char*)aes_key, BLOCK_SIZE, &aes) < 0)
@@ -92,7 +92,7 @@ size_t aes_encrypt(char* plan, char* aes_key,char* aes_iv, char* enout)
     int num = ceil(strlen(plan)/16.0);
     unsigned char instr[1024]={0};
     
-    snprintf((char*)instr,AES_BLOCK_SIZE*num,plan);
+    snprintf((char*)instr,AES_BLOCK_SIZE*num,"%s",plan);
     for (int ii = len; ii<AES_BLOCK_SIZE*num; ++ii) {
         instr[ii]=0x20;
     }
@@ -120,7 +120,7 @@ int aes_decrypt(char* enb64str, char* aes_key,char* aes_iv, char* deout)
 {
     AES_KEY aes;
     unsigned char ivec[AES_BLOCK_SIZE+1]={0};
-    snprintf((char*)ivec,AES_BLOCK_SIZE+1,aes_iv);
+    snprintf((char*)ivec,AES_BLOCK_SIZE+1,"%s",aes_iv);
     
     if(AES_set_decrypt_key((unsigned char*)aes_key, 128, &aes) < 0)
     {
