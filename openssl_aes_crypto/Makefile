@@ -1,7 +1,7 @@
 GIT_COMMIT_HASH = $(shell git log -1 --pretty=format:"%h")
 GIT_COMMIT_VERSION = $(shell git describe --tags --abbrev=0)
 
-CFLAGS += -DVSAAS_VERSION=\"$(GIT_COMMIT_VERSION)-$(GIT_COMMIT_HASH)\"
+CFLAGS += -DVERSION=\"$(GIT_COMMIT_VERSION)-$(GIT_COMMIT_HASH)\"
 LDFLAGS = -Os
 
 CC		= gcc
@@ -22,7 +22,6 @@ install:
 clean:
 	rm -rf `find . -name "*.o"`
 	rm -rf *.o
-	rm -rf v/*.o
 
 $(PROGS):
 	$(CX) $(LDFLAGS) -o $(OUTPUT) $^ $(LIBS)

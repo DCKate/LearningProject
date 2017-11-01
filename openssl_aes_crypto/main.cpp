@@ -19,13 +19,13 @@ uint64_t getSystimeUTs ()
     return tp_now.tv_sec*1000000 + tp_now.tv_usec ;
 }
 void testevp(){
-    char *utc_key=(char *)"opensslasdfghjkl";
-    char *utc_iv=(char *)"opensslasdfghjkl";
+    char *aes_key=(char *)"opensslasdfghjkl";
+    char *aes_iv=(char *)"opensslasdfghjkl";
     char decrout[1024]={0};
     char encrout[1024]={0};
     
-    size_t enclen = opensslevpencry(encrout,utc_key,utc_iv,(char *)"QWERTYUIOPLKJHGFDSA");
-    size_t declen = opensslevpdecry(decrout,utc_key,utc_iv,encrout);
+    size_t enclen = opensslevpencry(encrout,aes_key,aes_iv,(char *)"QWERTYUIOPLKJHGFDSA");
+    size_t declen = opensslevpdecry(decrout,aes_key,aes_iv,encrout);
 //    encrout[enclen]='\0';
 //    printf("encryption : %s\n",encrout);
 //    decrout[declen] = '\0';
@@ -33,12 +33,12 @@ void testevp(){
 }
 
 void testaes(){
-    char *utc_key=(char *)"opensslasdfghjkl";
-    char *utc_iv=(char *)"opensslasdfghjkl";
+    char *aes_key=(char *)"opensslasdfghjkl";
+    char *aes_iv=(char *)"opensslasdfghjkl";
     char decrout[1024]={0};
     char encrout[1024]={0};
-    size_t enclen = aes_encrypt((char *)"QWERTYUIOPLKJHGFDSA",utc_key,utc_iv, encrout);
-    int declen = aes_decrypt(encrout,utc_key,utc_iv, decrout);
+    size_t enclen = aes_encrypt((char *)"QWERTYUIOPLKJHGFDSA",aes_key,aes_iv, encrout);
+    int declen = aes_decrypt(encrout,aes_key,aes_iv, decrout);
 //    encrout[enclen]='\0';
 //    printf("encryption : %s\n",encrout);
 //    decrout[declen] = '\0';
