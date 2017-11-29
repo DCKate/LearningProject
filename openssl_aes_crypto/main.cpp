@@ -8,6 +8,8 @@
 
 #include <iostream>
 #include <sys/time.h>
+#include <ctime>
+#include <unistd.h>
 #include <map>
 #include "ossl_evp.hpp"
 #include "ossl_aes.hpp"
@@ -50,9 +52,10 @@ void testaes(){
 //    decrout[declen] = '\0';
 //    printf("decryption : %s\n",decrout);
 }
+
 int main(int argc, const char * argv[]) {
     if(argc<2){
-        std::cout<<"Useg: programe <ho many round:integer> <what api:EVP/AES>"<<std::endl;
+        std::cout<<"Useg: programe <how many round:integer> <how many in 1s> <what api:EVP/AES>"<<std::endl;
         return 0;
     }
     std::map<std::string,run_type> emap;
@@ -60,14 +63,22 @@ int main(int argc, const char * argv[]) {
     emap.insert(std::pair<std::string,run_type>("EVP", EVP));
 
     int count = std::stoi(argv[1],nullptr,10);
-    std::string tyty(argv[2]);
+    int uintcount = std::stoi(argv[2],nullptr,10);
+    std::string tyty(argv[3]);
 
     switch (emap[tyty]){
         case EVP:{
+            // std::clock_t e_start = std::clock();
             uint64_t tevp=getSystimeUTs();
             for (int ii=0; ii<count; ii++) {
+                std::clock_t c_start = std::clock();
                 testevp();
+                std::clock_t c_end = std::clock();
+                double ss = (1000.0/uintcount)-(1000.0 * (c_end-c_start) / CLOCKS_PER_SEC);
+                std::cout<<"Sleep for  "<<ss<<" cost "<<(1000.0 * (c_end-c_start) / CLOCKS_PER_SEC)<<std::endl;
+                usleep(ss*1000);
             }
+            // std::clock_t e_end = std::clock();
             uint64_t devp = getSystimeUTs()-tevp;
             std::cout<<"EVP "<<devp<<std::endl;
             break;
@@ -75,7 +86,12 @@ int main(int argc, const char * argv[]) {
         case AES:{
             uint64_t taes=getSystimeUTs();
             for (int ii=0; ii<count; ii++) {
+                std::clock_t c_start = std::clock();
                 testaes();
+                std::clock_t c_end = std::clock();
+                double ss = (1000.0/uintcount)-(1000.0 * (c_end-c_start) / CLOCKS_PER_SEC);
+                std::cout<<"Sleep for  "<<ss<<" cost "<<(1000.0 * (c_end-c_start) / CLOCKS_PER_SEC)<<std::endl;
+                usleep(ss*1000);
             }
             uint64_t daes = getSystimeUTs()-taes;
             std::cout<<"AES "<<daes<<std::endl;
