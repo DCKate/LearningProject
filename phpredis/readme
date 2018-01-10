@@ -1,0 +1,24 @@
+# for docker use
+docker network create --driver bridge docker_friend
+docker run -it --network=docker_friend -p 8080:8080 --name ngxphp kk/nginxphp
+# run redis server EXPOSE 6379
+docker run --network=docker_friend -v /home/kate/Documents/testcode/phpredis/redisdata:/data \ 
+            --name some-redis -d redis redis-server --appendonly yes  
+
+# for php extension develope 
+sudo apt-get install php7.0-dev
+
+using /usr/bin/php-config7.0 to provide /usr/bin/php-config (php-config) in auto mode
+using /usr/bin/phpize7.0 to provide /usr/bin/phpize (phpize) in auto mode
+
+```
+$ cd phpredis-3.1.4                      # inside  phpredis folder
+$ /usr/bin/php-config7.0             
+$ ./configure --with-php-config=/usr/bin/phpize7.0
+$ make
+$ make install
+```
+
+vim php.inside
+extension_dir = "/usr/lib/php/20151012"
+extension=redis.so
