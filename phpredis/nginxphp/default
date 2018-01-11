@@ -76,7 +76,6 @@ server {
                 add_header Access-Control-Allow-Origin $http_origin;
                 add_header Cache-Control no-cache;
                 include fastcgi_params;
-
         }
 
 }

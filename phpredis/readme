@@ -3,8 +3,12 @@ docker network create --driver bridge docker_friend
 docker run -it --network=docker_friend -p 8080:8080 --name ngxphp kk/nginxphp
 # run redis server EXPOSE 6379
 docker run --network=docker_friend -v /home/kate/Documents/testcode/phpredis/redisdata:/data \ 
-            --name some-redis -d redis redis-server --appendonly yes  
+            --name some-redis -d redis redis-server --appendonly yes  --requirepass <password>
 
+
+
+
+# if want to build php-redis by your own, o just apt install php-redis 
 # for php extension develope 
 sudo apt-get install php7.0-dev
 
@@ -19,6 +23,9 @@ $ make
 $ make install
 ```
 
-vim php.inside
-extension_dir = "/usr/lib/php/20151012"
+# after you have redis.so, you need~~~
+vim php.ini
+extension_dir = "/usr/lib/php/20151012" # system default position
 extension=redis.so
+
+redis ref: https://wizardforcel.gitbooks.io/redis-doc/content/ref/134.html
